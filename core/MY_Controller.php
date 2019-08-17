@@ -9,14 +9,15 @@ abstract class MY_Controller extends CI_Controller
 	{
 		$this->input_type = $input_type;
 		parent::__construct();
-		$this->instance = $this;
+		$this->instance = &$this;
 	}
 
 	public function model_loader($model_name, &$re = null)
 	{
 		$this->load->model($model_name);
-		if (!is_null($re))
-			$re = $this->$model_name;
+		$re = explode('/', $model_name);
+		$re = $re[sizeof($re) - 1];
+		$re = $this->$re;
 	}
 
 	public function _remap($method, $params = array())
